@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.squareup.moshi.kotlin)
     implementation(libs.converter.moshi)
+    implementation(libs.coil.compose)
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.compose.material:material-icons-core")

@@ -6,7 +6,7 @@ import edu.ucne.tarea4apiplanets.domain.repository.PlanetRepository
 import javax.inject.Inject
 
 class GetPlanetsUseCase @Inject constructor(
-    private val repository: PlanetRepository
+    private val repository: PlanetRepository,
 ) {
     suspend operator fun invoke(
         page: Int=1,

@@ -1,6 +1,7 @@
 package edu.ucne.tarea4apiplanets.data.remote.dto
 
 import com.squareup.moshi.JsonClass
+import edu.ucne.tarea4apiplanets.domain.model.Planet
 
 @JsonClass(generateAdapter = true)
 data class PlanetDto(
@@ -10,5 +11,11 @@ data class PlanetDto(
     val description: String,
     val image: String
 ){
-
+    fun toDomain() = Planet(
+        id,
+        name,
+        isDestroyed,
+        description,
+        image
+    )
 }
