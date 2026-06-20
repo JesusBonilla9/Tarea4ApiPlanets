@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import edu.ucne.tarea4apiplanets.data.remote.dto.PlanetDto
+import edu.ucne.tarea4apiplanets.domain.model.Planet
 
 @Composable
 fun DetailPlanetScreen(
@@ -120,7 +120,7 @@ fun DetailPlanetBodyScreen(
 @Preview(showBackground = true)
 @Composable
 fun DetailPlanetBodyScreenPreview() {
-    val samplePlanet = PlanetDto(
+    val samplePlanet = Planet(
         id = 1,
         name = "Tierra",
         isDestroyed = false,

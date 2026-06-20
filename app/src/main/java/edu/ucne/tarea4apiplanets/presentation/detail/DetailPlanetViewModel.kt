@@ -37,7 +37,7 @@ class DetailPlanetViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            planet = result.data
+                            planet = result.data?.toDomain()
                         )
                     }
                 }
