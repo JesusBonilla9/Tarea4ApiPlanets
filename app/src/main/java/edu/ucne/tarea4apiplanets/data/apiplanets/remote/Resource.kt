@@ -1,4 +1,4 @@
-package edu.ucne.tarea4apiplanets.data.remote
+package edu.ucne.tarea4apiplanets.data.apiplanets.remote
 
 sealed class Resource<T>(
     val data: T? = null,

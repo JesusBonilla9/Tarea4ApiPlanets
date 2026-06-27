@@ -1,7 +1,7 @@
-package edu.ucne.tarea4apiplanets.data.remote
+package edu.ucne.tarea4apiplanets.data.apiplanets.remote
 
-import edu.ucne.tarea4apiplanets.data.remote.dto.PlanetDto
-import edu.ucne.tarea4apiplanets.data.remote.dto.PlanetsResponseDto
+import edu.ucne.tarea4apiplanets.data.apiplanets.remote.dto.PlanetDto
+import edu.ucne.tarea4apiplanets.data.apiplanets.remote.dto.PlanetsResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
