@@ -1,9 +1,7 @@
-package edu.ucne.tarea4apiplanets.data.remote.dto
+package edu.ucne.tarea4apiplanets.data.apiplanets.remote.dto
 
-import com.squareup.moshi.JsonClass
-import edu.ucne.tarea4apiplanets.domain.model.Planet
+import edu.ucne.tarea4apiplanets.domain.apiplanets.model.Planet
 
-@JsonClass(generateAdapter = true)
 data class PlanetDto(
     val id: Int,
     val name: String,
