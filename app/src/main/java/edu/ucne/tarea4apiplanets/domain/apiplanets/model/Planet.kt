@@ -1,4 +1,4 @@
-package edu.ucne.tarea4apiplanets.domain.model
+package edu.ucne.tarea4apiplanets.domain.apiplanets.model
 
 data class Planet(
     val id: Int,

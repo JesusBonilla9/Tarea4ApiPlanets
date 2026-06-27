@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import edu.ucne.tarea4apiplanets.presentation.detail.DetailPlanetScreen
-import edu.ucne.tarea4apiplanets.presentation.list.PlanetListScreen
+import edu.ucne.tarea4apiplanets.presentation.apiplanets.detail.DetailPlanetScreen
+import edu.ucne.tarea4apiplanets.presentation.apiplanets.list.PlanetListScreen
 
 @Composable
 fun PlanetNavHost(
