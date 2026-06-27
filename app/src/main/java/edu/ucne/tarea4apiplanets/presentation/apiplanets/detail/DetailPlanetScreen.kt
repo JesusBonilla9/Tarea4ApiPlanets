@@ -1,4 +1,4 @@
-package edu.ucne.tarea4apiplanets.presentation.detail
+package edu.ucne.tarea4apiplanets.presentation.apiplanets.detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import edu.ucne.tarea4apiplanets.domain.model.Planet
+import edu.ucne.tarea4apiplanets.domain.apiplanets.model.Planet
 
 @Composable
 fun DetailPlanetScreen(

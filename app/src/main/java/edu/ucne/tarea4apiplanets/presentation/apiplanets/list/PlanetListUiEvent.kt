@@ -1,4 +1,4 @@
-package edu.ucne.tarea4apiplanets.presentation.list
+package edu.ucne.tarea4apiplanets.presentation.apiplanets.list
 
 sealed interface PlanetListUiEvent {
     data class UpdateFilters(

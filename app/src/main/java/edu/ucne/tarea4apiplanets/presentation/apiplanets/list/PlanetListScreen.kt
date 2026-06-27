@@ -1,4 +1,4 @@
-package edu.ucne.tarea4apiplanets.presentation.list
+package edu.ucne.tarea4apiplanets.presentation.apiplanets.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -28,21 +27,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import edu.ucne.tarea4apiplanets.data.remote.dto.PlanetDto
+import edu.ucne.tarea4apiplanets.domain.apiplanets.model.Planet
+import edu.ucne.tarea4apiplanets.ui.theme.Tarea4ApiPlanetsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlanetListScreen(
     viewModel: PlanetListViewModel = hiltViewModel(),
-    onPlanetClick: (Int) -> Unit,
+    onPlanetClick: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     PlanetListBodyScreen(
         state = state,
         onEvent = viewModel::onEvent,
@@ -60,21 +60,21 @@ fun PlanetListBodyScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = {
-                    Text("Dragon Ball Planets")
-                }
+                title = { Text("Planetas Dragon Ball") }
             )
         }
     ) { padding ->
+
         Column(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
         ) {
+
             FilterSection(
                 name = state.filterName,
                 isDestroyed = state.filterIsDestroyed,
-                onEvent = onEvent
+                onEvent = onEvent,
             )
 
             if (state.isLoading) {
@@ -87,9 +87,10 @@ fun PlanetListBodyScreen(
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(state.planets) { planet ->
-                    PlanetItem(planet = planet) {
-                        onPlanetClick(planet.id)
-                    }
+                    PlanetItem(
+                        planet = planet,
+                        onClick = { onPlanetClick(planet.id) }
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
                 }
             }
@@ -97,12 +98,14 @@ fun PlanetListBodyScreen(
     }
 }
 
+
 @Composable
 fun FilterSection(
     name: String,
     isDestroyed: Boolean?,
-    onEvent: (PlanetListUiEvent) -> Unit
+    onEvent: (PlanetListUiEvent) -> Unit,
 ) {
+
     ElevatedCard(
         modifier = Modifier
             .padding(16.dp)
@@ -115,7 +118,7 @@ fun FilterSection(
             OutlinedTextField(
                 value = name,
                 onValueChange = { onEvent(PlanetListUiEvent.UpdateFilters(it, isDestroyed)) },
-                label = { Text("Nombre: ") },
+                label = { Text("Nombre (ej. Tierra)") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -131,38 +134,32 @@ fun FilterSection(
 
 @Composable
 fun PlanetItem(
-    planet: PlanetDto,
-    onPlanetClick: () -> Unit
+    planet: Planet,
+    onClick: () -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onPlanetClick() }
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             AsyncImage(
                 model = planet.image,
                 contentDescription = planet.name,
                 modifier = Modifier.size(64.dp)
             )
-            Spacer(Modifier.width(16.dp))
+
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column {
-                Text(
-                    text = planet.name,
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Text(planet.name)
                 Text(
                     text = if (planet.isDestroyed) "Destruido" else "Intacto",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = if (planet.isDestroyed) {
-                        MaterialTheme.colorScheme.error
-                    } else {
-                        MaterialTheme.colorScheme.primary
-                    }
+                    color = if (planet.isDestroyed) Color.Red else Color.Green
                 )
             }
         }
@@ -171,30 +168,29 @@ fun PlanetItem(
 
 @Preview(showBackground = true)
 @Composable
-fun ListPlanetBodyScreenPreview() {
+fun PlanetListBodyScreenPreview() {
     val samplePlanets = listOf(
-        PlanetDto(
+        Planet(
             id = 1,
             name = "Tierra",
             isDestroyed = false,
             description = "Un planeta habitado por humanos y otros seres.",
-            image = "https://dragonball-api.com/api/planetas/Tierra.png"
+            image = ""
         ),
-        PlanetDto(
+        Planet(
             id = 2,
             name = "Namek",
             isDestroyed = true,
             description = "Hogar de los Namekianos.",
-            image = "https://dragonball-api.com/api/planetas/Namek.png"
+            image = ""
         )
     )
     val state = PlanetListUiState(
         planets = samplePlanets,
-        filterName = "",
-        filterIsDestroyed = false
+        filterName = "Tierra"
     )
 
-    MaterialTheme {
+    Tarea4ApiPlanetsTheme {
         Surface {
             PlanetListBodyScreen(
                 state = state,

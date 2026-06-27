@@ -1,12 +1,12 @@
-package edu.ucne.tarea4apiplanets.presentation.detail
+package edu.ucne.tarea4apiplanets.presentation.apiplanets.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.ucne.tarea4apiplanets.data.remote.Resource
-import edu.ucne.tarea4apiplanets.domain.usecase.GetPlanetDetailUseCase
+import edu.ucne.tarea4apiplanets.data.apiplanets.remote.Resource
+import edu.ucne.tarea4apiplanets.domain.apiplanets.usecase.GetPlanetDetailUseCase
 import edu.ucne.tarea4apiplanets.presentation.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailPlanetViewModel @Inject constructor(
     private val getPlanetDetailUseCase: GetPlanetDetailUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailPlanetUiState())
@@ -30,27 +30,21 @@ class DetailPlanetViewModel @Inject constructor(
 
     private fun loadPlanet(id: Int) {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
-            val result = getPlanetDetailUseCase(id)
-            when (result) {
-                is Resource.Success -> {
-                    _state.update {
+            getPlanetDetailUseCase(id).collect { result ->
+                when (result) {
+                    is Resource.Loading -> _state.update { it.copy(isLoading = true) }
+                    is Resource.Success -> _state.update {
                         it.copy(
                             isLoading = false,
-                            planet = result.data?.toDomain()
+                            planet = result.data
                         )
                     }
-                }
-                is Resource.Error -> {
-                    _state.update {
+                    is Resource.Error -> _state.update {
                         it.copy(
                             isLoading = false,
                             error = result.message
                         )
                     }
-                }
-                is Resource.Loading -> {
-                    _state.update { it.copy(isLoading = true) }
                 }
             }
         }
