@@ -21,22 +21,47 @@ class CharacterRepositoryImpl @Inject constructor(
     ): Flow<Resource<List<Character>>> = flow {
         emit(Resource.Loading())
 
-        val response = remoteDataSource.getCharacters(page, limit, name, gender, race)
-        response.onSuccess { characters ->
-            emit(Resource.Success(characters.items.map { it.toDomain() }))
-        }.onFailure {
-            emit(Resource.Error(it.message ?: "Error desconocido"))
+        val result = remoteDataSource.getCharacters(page, limit, name, gender, race)
+        result.onSuccess { charactersResponse ->
+            val domainCharacters = charactersResponse.items.map { it.toDomain() }
+            emit(Resource.Success(domainCharacters))
+        }.onFailure { exception ->
+            if (!name.isNullOrBlank() || !gender.isNullOrBlank() || !race.isNullOrBlank()) {
+                val alternativeResult = remoteDataSource.getCharacters(
+                    page = 1,
+                    limit = 100,
+                    name = null,
+                    gender = null,
+                    race = null
+                )
+                alternativeResult.onSuccess { alternativeResponse ->
+                    val filteredList = alternativeResponse.items
+                        .filter { item ->
+                            val matchedName = name.isNullOrBlank() || item.name.contains(name, ignoreCase = true)
+                            val matchedGender = gender.isNullOrBlank() || item.gender.equals(gender, ignoreCase = true)
+                            val matchedRace = race.isNullOrBlank() || item.race.contains(race, ignoreCase = true)
+
+                            matchedName && matchedGender && matchedRace
+                        }
+                        .map { it.toDomain() }
+                    emit(Resource.Success(filteredList))
+                }.onFailure {
+                    emit(Resource.Error(exception.message ?: "Error desconocido"))
+                }
+            } else {
+                emit(Resource.Error(exception.message ?: "Error desconocido"))
+            }
         }
     }
 
     override fun getCharacterDetail(id: Int): Flow<Resource<Character>> = flow {
         emit(Resource.Loading())
 
-        val response = remoteDataSource.getCharacterDetail(id)
-        response.onSuccess { character ->
-            emit(Resource.Success(character.toDomain()))
-        }.onFailure {
-            emit(Resource.Error(it.message ?: "Error desconocido"))
+        val result = remoteDataSource.getCharacterDetail(id)
+        result.onSuccess { characterDto ->
+            emit(Resource.Success(characterDto.toDomain()))
+        }.onFailure { exception ->
+            emit(Resource.Error(exception.message ?: "Error desconocido"))
         }
     }
 }

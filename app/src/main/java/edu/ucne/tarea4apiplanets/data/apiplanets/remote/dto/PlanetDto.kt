@@ -10,10 +10,6 @@ data class PlanetDto(
     val image: String
 ){
     fun toDomain() = Planet(
-        id,
-        name,
-        isDestroyed,
-        description,
-        image
+        id, name, isDestroyed, description, image
     )
 }

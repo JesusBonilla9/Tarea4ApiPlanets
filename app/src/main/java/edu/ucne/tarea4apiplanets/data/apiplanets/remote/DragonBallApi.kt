@@ -9,7 +9,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface DragonBallApi{
+interface DragonBallApi {
+
     @GET("planets")
     suspend fun getPlanets(
         @Query("page") page: Int,

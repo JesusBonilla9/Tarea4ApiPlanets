@@ -40,14 +40,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(api: DragonBallApi): PlanetRepository{
-        return PlanetRepositoryImpl(PlanetRemoteDataSource(api))
+    fun providePlanetRepository(remoteDataSource: PlanetRemoteDataSource): PlanetRepository{
+        return PlanetRepositoryImpl(remoteDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideCharacterRepository(api: DragonBallApi): CharacterRepository{
-        return CharacterRepositoryImpl(CharacterRemoteDataSource(api))
+    fun provideCharacterRepository(remoteDataSource: CharacterRemoteDataSource): CharacterRepository{
+        return CharacterRepositoryImpl(remoteDataSource)
     }
-
 }

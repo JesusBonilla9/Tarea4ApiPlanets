@@ -13,13 +13,6 @@ data class CharacterDto(
     val maxKi: String
 ) {
     fun toDomain() = Character(
-        id,
-        name,
-        ki,
-        maxKi,
-        race,
-        gender,
-        description,
-        image
+        id, name, ki, maxKi, race, gender, description, image
     )
 }
