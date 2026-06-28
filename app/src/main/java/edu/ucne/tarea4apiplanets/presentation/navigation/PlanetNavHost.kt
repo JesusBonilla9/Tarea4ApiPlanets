@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import edu.ucne.tarea4apiplanets.presentation.apicharacters.detail.DetailCharacterScreen
+import edu.ucne.tarea4apiplanets.presentation.apicharacters.list.CharacterListScreen
 import edu.ucne.tarea4apiplanets.presentation.apiplanets.detail.DetailPlanetScreen
 import edu.ucne.tarea4apiplanets.presentation.apiplanets.list.PlanetListScreen
 
@@ -23,6 +25,19 @@ fun PlanetNavHost(
 
         composable<Screen.PlanetDetail> {
             DetailPlanetScreen(
+                onBack = {
+                    navHostController.navigateUp()
+                }
+            )
+        }
+        composable<Screen.CharacterList> {
+            CharacterListScreen { characterId ->
+                navHostController.navigate(Screen.CharacterDetail(characterId))
+            }
+        }
+
+        composable<Screen.CharacterDetail> {
+            DetailCharacterScreen(
                 onBack = {
                     navHostController.navigateUp()
                 }
